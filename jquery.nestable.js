@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * Originally authored by Ramon Smit, modified by Squared Up: https://github.com/squaredup/Nestable
  * Nestable jQuery Plugin - Copyright (c) 2014 Ramon Smit - https://github.com/RamonSmit/Nestable
  */
@@ -872,33 +872,17 @@ window.jQuery = require('jquery');
 
             // do scrolling if enable
             if (opt.scroll) {
-                if (typeof window.jQuery.fn.scrollParent !== 'undefined') {
-                    var scrolled = false;
-                    var scrollParent = this.el.scrollParent()[0];
-                    if (scrollParent !== document && scrollParent.tagName !== 'HTML') {
-                        if ((opt.scrollTriggers.bottom + scrollParent.offsetHeight) - e.pageY < opt.scrollSensitivity)
-                            scrollParent.scrollTop = scrolled = scrollParent.scrollTop + opt.scrollSpeed;
-                        else if (e.pageY - opt.scrollTriggers.top < opt.scrollSensitivity)
-                            scrollParent.scrollTop = scrolled = scrollParent.scrollTop - opt.scrollSpeed;
+                var scrolled = false;
+                if (e.pageY - $(document).scrollTop() < opt.scrollSensitivity)
+                    scrolled = $(document).scrollTop($(document).scrollTop() - opt.scrollSpeed);
+                else if ($(window).height() - (e.pageY - $(document).scrollTop()) < opt.scrollSensitivity)
+                    scrolled = $(document).scrollTop($(document).scrollTop() + opt.scrollSpeed);
 
-                        if ((opt.scrollTriggers.right + scrollParent.offsetWidth) - e.pageX < opt.scrollSensitivity)
-                            scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft + opt.scrollSpeed;
-                        else if (e.pageX - opt.scrollTriggers.left < opt.scrollSensitivity)
-                            scrollParent.scrollLeft = scrolled = scrollParent.scrollLeft - opt.scrollSpeed;
-                    } else {
-                        if (e.pageY - $(document).scrollTop() < opt.scrollSensitivity)
-                            scrolled = $(document).scrollTop($(document).scrollTop() - opt.scrollSpeed);
-                        else if ($(window).height() - (e.pageY - $(document).scrollTop()) < opt.scrollSensitivity)
-                            scrolled = $(document).scrollTop($(document).scrollTop() + opt.scrollSpeed);
+                if (e.pageX - $(document).scrollLeft() < opt.scrollSensitivity)
+                    scrolled = $(document).scrollLeft($(document).scrollLeft() - opt.scrollSpeed);
+                else if ($(window).width() - (e.pageX - $(document).scrollLeft()) < opt.scrollSensitivity)
+                    scrolled = $(document).scrollLeft($(document).scrollLeft() + opt.scrollSpeed);
 
-                        if (e.pageX - $(document).scrollLeft() < opt.scrollSensitivity)
-                            scrolled = $(document).scrollLeft($(document).scrollLeft() - opt.scrollSpeed);
-                        else if ($(window).width() - (e.pageX - $(document).scrollLeft()) < opt.scrollSensitivity)
-                            scrolled = $(document).scrollLeft($(document).scrollLeft() + opt.scrollSpeed);
-                    }
-                } else {
-                    console.warn('To use scrolling you need to have scrollParent() function, check documentation for more information');
-                }
             }
 
             if (this.scrollTimer) {
